@@ -5,6 +5,9 @@ $images = [];
 
 if (is_dir($uploadsDir)) {
     $files = scandir($uploadsDir);
+    if ($files === false) {
+        $files = [];
+    }
     foreach ($files as $file) {
         if ($file === '.' || $file === '..') {
             continue;

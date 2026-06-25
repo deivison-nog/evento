@@ -65,7 +65,7 @@ if (!is_dir($uploadsDir) && !mkdir($uploadsDir, 0755, true) && !is_dir($uploadsD
 
 try {
     $basename = bin2hex(random_bytes(16));
-} catch (Throwable $exception) {
+} catch (Throwable) {
     $basename = uniqid('img_', true);
 }
 
