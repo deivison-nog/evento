@@ -98,3 +98,28 @@ body {
     padding: 2rem;
   }
 }
+
+.pagination-neon .page-link {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 79, 216, 0.4);
+  color: var(--white-soft);
+}
+
+.pagination-neon .page-link:hover {
+  background: rgba(255, 79, 216, 0.2);
+  border-color: var(--pink-neon);
+  color: #fff;
+}
+
+.pagination-neon .page-item.active .page-link {
+  background: var(--pink-strong);
+  border-color: var(--pink-neon);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(255, 79, 216, 0.6);
+}
+
+.pagination-neon .page-item.disabled .page-link {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.3);
+}
