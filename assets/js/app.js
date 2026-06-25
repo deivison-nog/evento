@@ -42,7 +42,7 @@
 
       renderStatus(result.message + ' <a href="gallery.php" class="link-light ms-2">Ver galeria</a>', 'ok');
     } catch (error) {
-      renderStatus((error && error.message) || 'Erro no envio da foto.', 'error');
+      renderStatus(error?.message || 'Erro no envio da foto.', 'error');
     } finally {
       photoInput.value = '';
     }

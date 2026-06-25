@@ -2,10 +2,12 @@
 $uploadsDir = __DIR__ . '/uploads';
 $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 $images = [];
+$scanError = false;
 
 if (is_dir($uploadsDir)) {
     $files = scandir($uploadsDir);
     if ($files === false) {
+        $scanError = true;
         $files = [];
     }
     foreach ($files as $file) {
@@ -70,6 +72,12 @@ usort($images, static fn(array $a, array $b): int => $b['mtime'] <=> $a['mtime']
               </a>
             </div>
           <?php endforeach; ?>
+        </div>
+      <?php endif; ?>
+
+      <?php if ($scanError): ?>
+        <div class="alert alert-warning mt-3 mb-0" role="alert">
+          Não foi possível carregar todas as fotos agora. Tente novamente em instantes.
         </div>
       <?php endif; ?>
     </section>

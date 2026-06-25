@@ -23,10 +23,11 @@ if (($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) {
     exit;
 }
 
-$maxSize = 10 * 1024 * 1024;
+$maxSizeMb = 10;
+$maxSize = $maxSizeMb * 1024 * 1024;
 if (($file['size'] ?? 0) <= 0 || $file['size'] > $maxSize) {
     http_response_code(400);
-    echo json_encode(['success' => false, 'message' => 'A imagem precisa ter até 10MB.']);
+    echo json_encode(['success' => false, 'message' => "A imagem precisa ter até {$maxSizeMb}MB."]);
     exit;
 }
 
