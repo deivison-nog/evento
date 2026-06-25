@@ -7,8 +7,47 @@
     return;
   }
 
-  function renderStatus(message, type) {
-    uploadStatus.innerHTML = '<div class="status-box ' + type + '">' + message + '</div>';
+  function clearStatus() {
+    uploadStatus.textContent = '';
+  }
+
+  function renderStatus(message, type, linkHref) {
+    clearStatus();
+    const box = document.createElement('div');
+    box.className = 'status-box ' + (type || '');
+    box.append(document.createTextNode(message));
+
+    if (linkHref) {
+      const link = document.createElement('a');
+      link.className = 'link-light ms-2';
+      link.href = linkHref;
+      link.textContent = 'Ver galeria';
+      box.appendChild(link);
+    }
+
+    uploadStatus.appendChild(box);
+  }
+
+  function renderUploading() {
+    clearStatus();
+    const box = document.createElement('div');
+    box.className = 'status-box';
+
+    const wrap = document.createElement('div');
+    wrap.className = 'd-flex align-items-center gap-2';
+
+    const spinner = document.createElement('div');
+    spinner.className = 'spinner-border spinner-border-sm text-light';
+    spinner.setAttribute('role', 'status');
+    spinner.setAttribute('aria-hidden', 'true');
+
+    const text = document.createElement('span');
+    text.textContent = 'Enviando foto...';
+
+    wrap.appendChild(spinner);
+    wrap.appendChild(text);
+    box.appendChild(wrap);
+    uploadStatus.appendChild(box);
   }
 
   cameraBtn.addEventListener('click', function () {
@@ -24,10 +63,7 @@
     const formData = new FormData();
     formData.append('photo', file);
 
-    renderStatus(
-      '<div class="d-flex align-items-center gap-2"><div class="spinner-border spinner-border-sm text-light" role="status" aria-hidden="true"></div><span>Enviando foto...</span></div>',
-      ''
-    );
+    renderUploading();
 
     try {
       const response = await fetch('upload.php', {
@@ -35,12 +71,17 @@
         body: formData
       });
 
+      const contentType = response.headers.get('content-type') || '';
+      if (!contentType.includes('application/json')) {
+        throw new Error('Resposta inesperada do servidor.');
+      }
+
       const result = await response.json();
       if (!response.ok || !result.success) {
         throw new Error(result.message || 'Não foi possível enviar a foto.');
       }
 
-      renderStatus(result.message + ' <a href="gallery.php" class="link-light ms-2">Ver galeria</a>', 'ok');
+      renderStatus(result.message, 'ok', 'gallery.php');
     } catch (error) {
       renderStatus(error?.message || 'Erro no envio da foto.', 'error');
     } finally {

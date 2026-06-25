@@ -25,9 +25,10 @@ if (is_dir($uploadsDir)) {
             continue;
         }
 
+        $mtime = filemtime($path);
         $images[] = [
             'name' => $file,
-            'mtime' => filemtime($path) ?: 0,
+            'mtime' => $mtime === false ? 0 : $mtime,
         ];
     }
 }
